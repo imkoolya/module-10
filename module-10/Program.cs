@@ -9,7 +9,6 @@ class BasicCalculator : ICalculator
         return a + b;
     }
 }
-
 class Program
 {
     static void Main(string[] args)
