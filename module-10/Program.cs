@@ -1,38 +1,52 @@
-﻿interface ICalculator
+﻿public interface ICalculator
 {
     int Add(int a, int b);
 }
-class BasicCalculator : ICalculator
+public interface ILogger
 {
-    public int Add(int a, int b)
+    void Event(string message);
+    void Error(string message);
+}
+public class Logger : ILogger
+{
+    public void Event(string message)
     {
-        return a + b;
+        Console.BackgroundColor = ConsoleColor.Black;
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine(message);
+    }
+    public void Error(string message)
+    {
+        Console.BackgroundColor = ConsoleColor.Black;
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(message);
     }
 }
 class Program
 {
+    static ILogger Logger { get; set; }
     static void Main(string[] args)
     {
+        Logger = new Logger();
+        var calculator = new Calculator(Logger);
         try
         {
-            Console.WriteLine("Введите первое число:");
+            Console.WriteLine("Enter first number:");
             int a = Convert.ToInt32(Console.ReadLine());
 
-            Console.WriteLine("Введите второе число:");
+            Console.WriteLine("Enter second number:");
             int b = Convert.ToInt32(Console.ReadLine());
-
-            ICalculator calculator = new BasicCalculator();
             int result = calculator.Add(a, b);
 
-            Console.WriteLine("Результат сложения: {0}", result);
+            Console.WriteLine("Result: {0}", result);
         }
         catch
         {
-            Console.WriteLine("Ошибка: Неверный формат.");
+            throw new FormatException();
         }
         finally
         {
-            Console.WriteLine("Работа калькулятора завершена.");
+            Console.WriteLine("The calculator is finished.");
         }
     }
 }
